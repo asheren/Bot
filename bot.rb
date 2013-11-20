@@ -1,4 +1,6 @@
 require 'cinch'
+require 'open-uri'
+require 'json'
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
@@ -18,6 +20,17 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   on :message, /cheer up (.*)/ do |m, name| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
     m.reply "feel better, #{name}"
+  end
+
+  on :message, "weather?" do |m|
+    open("http://api.wunderground.com/api/d7aa1bd257c65230/geolookup/conditions/q/DC/Washington.json") do |f|
+      json_string = f.read
+      parsed_json = JSON.parse(json_string)
+      location = parsed_json['location']['city']
+      temp_f = parsed_json['current_observation']['temp_f']
+      weather = parsed_json['weather']
+      m.reply "Current temperature in #{location} is: #{temp_f} and conditions are #{weather}\n"
+    end
   end
 end
 
