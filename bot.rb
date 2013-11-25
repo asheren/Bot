@@ -67,7 +67,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       [:reply, "yyyyeessss?"],
       [:action, "hides"],
     ]
-    m.reply response.sample #response includes brackets
+    msg = response.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
+    if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
+      m.channel.action msg.last # If it equals :action, then "/me" it to the channel
+    else
+      m.reply msg.last  # Otherwise just reply like normal
+    end
   end
  
 
@@ -77,6 +82,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif%3Fw%3D400%26h%3D211",
       "http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif",
       "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k",
+      "COOOFFFEEEEE!",
     ]
     m.reply gifs.sample
   end
@@ -88,8 +94,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   #collection of URLs for the week
 
   #trivia
-
-  #I am batman
 
   on :message, /.*(district taco).*/i do |m| #district taco mention permalink: http://rubular.com/r/HyGCwpSps9
     gifs = [
