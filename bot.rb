@@ -46,7 +46,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     ]
     m.reply message.sample #comes out with the brackets.
   end
-  #when someone says they're angry or frustrated... have teresa flipping a table
+ 
   on :message, /.*(angr|frustr|annoy).*/i do |m| #permelink: http://rubular.com/r/xwJ6lsIOE3
     gifs = [
       "http://buzzworthy.mtv.com//wp-content/uploads/buzz/2013/10/giphy1.gif",
@@ -54,19 +54,33 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "http://i.perezhilton.com/wp-content/uploads/2013/06/real-housewives-new-jersey-drama-back.gif",
     ]
     m.reply gifs.sample
-  end #last link not working
+  end 
 
   #cheer up, provides a unicorn/rainbow butterfly picture
 
-  #asking for Rosie 
- # http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif
+  on :message, /Rosie\?/i do |m, name| #asking for Rosie 
+    response = [
+      [:reply, "Did someone ask for me?"],
+      [:reply, "http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif"],
+      [:reply, "what do you want now?"],
+      [:reply, "#{name}, why are you bothering me?"],
+      [:reply, "it wasn't me."],
+      [:reply, "yyyyeessss?"],
+      [:action, "hides"],
+    ]
+    m.reply response.sample #response includes brackets
+  end
+ 
 
-  #coffee responses
-  # http://wac.9ebf.edgecastcdn.net/809EBF/ec-origin.chicago.barstoolsports.com/files/2012/12/badcoffee.gif
-  # http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif%3Fw%3D400%26h%3D211
-  # http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif
-  # https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k
-
+  on :message, /.*(coffee).*/i do |m|
+    gifs = [
+      "http://wac.9ebf.edgecastcdn.net/809EBF/ec-origin.chicago.barstoolsports.com/files/2012/12/badcoffee.gif",
+      "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif%3Fw%3D400%26h%3D211",
+      "http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif",
+      "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k",
+    ]
+    m.reply gifs.sample
+  end
 
   #squirrel
 
@@ -94,7 +108,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   # http://1.bp.blogspot.com/-MHsyzGREaOM/UE5i5Virs4I/AAAAAAAACV0/3ThUl1CGw9o/s1600/320.jpg
 
   #clean up
-  http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg
+  #http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg
 
 end
 
