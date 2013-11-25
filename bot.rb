@@ -1,4 +1,4 @@
-#todo think of name for bot
+#Rosie the Bot
 
 require 'cinch'
 require 'open-uri'
@@ -47,7 +47,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply message.sample #comes out with the brackets.
   end
   #when someone says they're angry or frustrated... have teresa flipping a table
-  on :message, /.*angry.*/ do |m| #fix regex so it responds to more stuff
+  on :message, /.*(angr|frustr|annoy).*/i do |m| #permelink: http://rubular.com/r/xwJ6lsIOE3
     gifs = [
       "http://buzzworthy.mtv.com//wp-content/uploads/buzz/2013/10/giphy1.gif",
       "http://25.media.tumblr.com/f9c10ad19d909a351b5bbec90b08064c/tumblr_murtfzl9N81ql5yr7o1_500.gif",
