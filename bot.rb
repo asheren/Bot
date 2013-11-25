@@ -12,7 +12,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
       c.channels = ['#rosie'] #the channel the bot connects to 
-      c.user = 'Rosie' #actual name of the bot
+      c.user = 'Miss_Rosie' #actual name of the bot ##rosie is taken... does the bot need to be registered?
       c.nick = c.user #sets nickname as same as user name
   end
 
@@ -109,9 +109,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   # http://lifeisopinion.ca/content/images/2013/Oct/Sneakers-1.gif
   # http://1.bp.blogspot.com/-MHsyzGREaOM/UE5i5Virs4I/AAAAAAAACV0/3ThUl1CGw9o/s1600/320.jpg
 
-  #clean up
-  #http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg
-
+  on :message, /.*(refactor).*/i do |m| #refactor permalink: http://rubular.com/r/Kdg7UFlKnr
+    reply = [
+      "http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg",
+    ]
+    m.reply reply.sample
+  end
 end
 
 
