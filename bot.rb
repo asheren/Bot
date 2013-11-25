@@ -106,7 +106,13 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   # #lol
   # http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif
 
-  # #something related to code
+  on :message do |m| #randomly say "I am Batman"
+    if rand(500) == 0
+      m.reply "I am Batman!"
+    end
+  end
+
+  on :message, /I love | I hate to code/i # #something related to code
   # http://lifeisopinion.ca/content/images/2013/Oct/Sneakers-1.gif
   # http://1.bp.blogspot.com/-MHsyzGREaOM/UE5i5Virs4I/AAAAAAAACV0/3ThUl1CGw9o/s1600/320.jpg
 
