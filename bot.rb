@@ -30,8 +30,9 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       parsed_json = JSON.parse(json_string)
       location = parsed_json['location']['city']
       temp_f = parsed_json['current_observation']['temp_f']
-      weather = parsed_json['weather'] #not working
-      m.reply "Current temperature in #{location} is: #{temp_f} and conditions are #{weather}\n"
+      weather = parsed_json['current_observation']['weather'] 
+      feelslike_f = parsed_json['current_observation']['feelslike_f']
+      m.reply "Current temperature in #{location} is: #{temp_f} F but it feels like #{feelslike_f} F. Conditions are #{weather}.\n"
     end
   end
 
