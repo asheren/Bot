@@ -112,9 +112,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
 
-  on :message, /I love | I hate to code/i # #something related to code
-  # http://lifeisopinion.ca/content/images/2013/Oct/Sneakers-1.gif
-  # http://1.bp.blogspot.com/-MHsyzGREaOM/UE5i5Virs4I/AAAAAAAACV0/3ThUl1CGw9o/s1600/320.jpg
+  on :message, /\b(I love|I hate) .*cod.*/i do |m| # love or hate code permalink:  http://rubular.com/r/XJX6N4Z2Rj
+    images = [
+      "http://lifeisopinion.ca/content/images/2013/Oct/Sneakers-1.gif",
+    ]
+    m.reply images.sample
+  end
 
   on :message, /.*(refactor).*/i do |m| #refactor permalink: http://rubular.com/r/Kdg7UFlKnr
     reply = [
