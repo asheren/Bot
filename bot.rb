@@ -47,7 +47,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply message.sample #comes out with the brackets.
   end
  
-  on :message, /.*(angr|frustr|annoy).*/i do |m| #permelink: http://rubular.com/r/xwJ6lsIOE3
+  on :message, /.*(angr|frustr|annoy).*/i do |m| #permalink: http://rubular.com/r/xwJ6lsIOE3
     gifs = [
       "http://buzzworthy.mtv.com//wp-content/uploads/buzz/2013/10/giphy1.gif",
       "http://25.media.tumblr.com/f9c10ad19d909a351b5bbec90b08064c/tumblr_murtfzl9N81ql5yr7o1_500.gif",
@@ -56,9 +56,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply gifs.sample
   end 
 
-  #cheer up, provides a unicorn/rainbow butterfly picture
-
-  on :message, /Rosie\?/i do |m, name| #asking for Rosie 
+  on :message, /Rosie\?/i do |m, name| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
     response = [
       [:reply, "Did someone ask for me?"],
       [:reply, "http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif"],
@@ -92,10 +90,14 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   #I am batman
 
-  #district taco mention
-  # http://images5.fanpop.com/image/photos/30300000/Da-best-3-mean-girls-30385685-500-225.gif
-  # http://25.media.tumblr.com/22d830dbc9bd5de756417f2e009e9e65/tumblr_mtbufrOGsO1ql5yr7o1_500.gif
-  # http://bcgavel.com/wp-content/uploads/2013/11/Gilmore-Girls-gif.gif
+  on :message, /.*(district taco).*/i do |m| #district taco mention permalink: http://rubular.com/r/HyGCwpSps9
+    gifs = [
+      "http://images5.fanpop.com/image/photos/30300000/Da-best-3-mean-girls-30385685-500-225.gif",
+      "http://25.media.tumblr.com/22d830dbc9bd5de756417f2e009e9e65/tumblr_mtbufrOGsO1ql5yr7o1_500.gif",
+      "http://bcgavel.com/wp-content/uploads/2013/11/Gilmore-Girls-gif.gif",
+    ]
+    m.reply gifs.sample
+  end
 
   # #random
   # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
