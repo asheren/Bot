@@ -16,6 +16,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       c.nick = c.user #sets nickname as same as user name
   end
 
+  ##todo: change so this responds to hi rosie and hello rosie
   on :message, "hello" do |m| #when a message happens that says hello, call my block
     m.reply "Hello, #{m.user.nick}"
   end
@@ -46,7 +47,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       [:action, "makes coffee"],
       [:action, "*throws open all the windows* it's a glorious day today"]
     ]
-    msg = response.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
+    msg = message.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
     if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
       m.channel.action msg.last # If it equals :action, then "/me" it to the channel
     else
@@ -104,15 +105,19 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   # #random
   # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
 
-  # #lol
-  # http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif
+  on :message, /\blol\b/i do |m| #lol permalink: http://rubular.com/r/rp8qmLsmvP
+    images = [
+      "http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif",
+      "http://t1.gstatic.com/images?q=tbn:ANd9GcRHO011b4PdAtKNYAzDfMm1aBeW_EW5afQ8wgEdRvI1eYQZB0o0",
+    ]
+    m.reply images.sample
+  end
 
-  #Rosie, tell me a joke
-  on :message, /.*joke.*/i do |m|
+  on :message, /.*joke.*/i do |m| #rosie, tell me a joke permalink: http://rubular.com/r/nj5dZuQfnk
     responses = [
       "It’s hard to explain puns to kleptomaniacs because they always take things literally.",
       "What does a nosey pepper do? Get jalapeño business.",
-      "You kill vegetarian vampires with a steak to the heart.".
+      "You kill vegetarian vampires with a steak to the heart.",
       "If you want to catch a squirrel just climb a tree and act like a nut.",
       "Did you hear about the Mexican train killer? He had locomotives.",
       "How does NASA organize their company parties? They planet.",
@@ -123,10 +128,10 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "What’s the best part about living in Switzerland? Not sure, but the flag is a big plus.",
       "Why can’t a bike stand on its own? It’s two tired.",
       "What do you call a big pile of kittens? A meowntain.",
-      " I wrote a song about a tortilla. Well actually, it’s more of a wrap.",
+      "I wrote a song about a tortilla. Well actually, it’s more of a wrap.",
       "How did the hipster burn his tongue? He drank his coffee before it was cool.",
       "You want to hear a pizza joke? Never mind, it’s pretty cheesy.",
-      "Dry erase boards are remarkable."
+      "Dry erase boards are remarkable.",
     ]
     m.reply responses.sample
   end
@@ -157,7 +162,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message, /.*(refactor).*/i do |m| #refactor permalink: http://rubular.com/r/Kdg7UFlKnr
     reply = [
       "http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg",
-      "My software never has bugs. It just develops random features"
+      "My software never has bugs. It just develops random features",
     ]
     m.reply reply.sample
   end
