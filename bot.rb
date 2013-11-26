@@ -41,6 +41,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       [:reply, "Good morning to you too!"],
       [:reply, "it's a brand new day!"],
       [:reply, "I'm sleepy today"],
+      [:reply, "http://gifrific.com/wp-content/uploads/2012/04/bunny-sleep-work.gif"],
       [:action, "yawns"],
       [:action, "makes coffee"],
       [:action, "*throws open all the windows* it's a glorious day today"]
@@ -106,6 +107,31 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   # #lol
   # http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif
 
+  #Rosie, tell me a joke
+  on :message, /.*joke.*/i do |m|
+    responses = [
+      "It’s hard to explain puns to kleptomaniacs because they always take things literally.",
+      "What does a nosey pepper do? Get jalapeño business.",
+      "You kill vegetarian vampires with a steak to the heart.".
+      "If you want to catch a squirrel just climb a tree and act like a nut.",
+      "Did you hear about the Mexican train killer? He had locomotives.",
+      "How does NASA organize their company parties? They planet.",
+      "Why does Snoop Dogg carry an umbrella? Fo’ drizzle.",
+      "What did Jay-Z call his girlfriend before they got married? Feyoncé.",
+      "How many kids with ADHD does it take to change a light bulb? Let’s go play on our bikes.",
+      "What do you call dangerous precipitation? A rain of terror.",
+      "What’s the best part about living in Switzerland? Not sure, but the flag is a big plus.",
+      "Why can’t a bike stand on its own? It’s two tired.",
+      "What do you call a big pile of kittens? A meowntain.",
+      " I wrote a song about a tortilla. Well actually, it’s more of a wrap.",
+      "How did the hipster burn his tongue? He drank his coffee before it was cool.",
+      "You want to hear a pizza joke? Never mind, it’s pretty cheesy.",
+      "Dry erase boards are remarkable."
+    ]
+    m.reply responses.sample
+  end
+
+
   on :message, /.*(district taco).*/i do |m| #district taco mention permalink: http://rubular.com/r/HyGCwpSps9
     gifs = [
       "http://images5.fanpop.com/image/photos/30300000/Da-best-3-mean-girls-30385685-500-225.gif",
@@ -131,6 +157,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message, /.*(refactor).*/i do |m| #refactor permalink: http://rubular.com/r/Kdg7UFlKnr
     reply = [
       "http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg",
+      "My software never has bugs. It just develops random features"
     ]
     m.reply reply.sample
   end
