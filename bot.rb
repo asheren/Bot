@@ -1,4 +1,4 @@
-#Rosie the Bot
+#Rosie the Bot ##alternate name sababot
 
 require 'cinch'
 require 'open-uri'
@@ -45,7 +45,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       [:action, "makes coffee"],
       [:action, "*throws open all the windows* it's a glorious day today"]
     ]
-    m.reply message.sample #comes out with the brackets.
+    msg = response.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
+    if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
+      m.channel.action msg.last # If it equals :action, then "/me" it to the channel
+    else
+      m.reply msg.last  # Otherwise just reply like normal
+    end #comes out with the brackets.
   end
  
   on :message, /.*(angr|frustr|annoy).*/i do |m| #permalink: http://rubular.com/r/xwJ6lsIOE3
@@ -95,6 +100,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   #trivia
 
+  # #random
+  # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
+
+  # #lol
+  # http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif
+
   on :message, /.*(district taco).*/i do |m| #district taco mention permalink: http://rubular.com/r/HyGCwpSps9
     gifs = [
       "http://images5.fanpop.com/image/photos/30300000/Da-best-3-mean-girls-30385685-500-225.gif",
@@ -103,12 +114,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     ]
     m.reply gifs.sample
   end
-
-  # #random
-  # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
-
-  # #lol
-  # http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif
 
   on :message do |m| #randomly say "I am Batman"
     if rand(500) == 0
