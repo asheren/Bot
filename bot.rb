@@ -12,7 +12,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
       c.channels = ['#rosie'] #the channel the bot connects to 
-      c.user = 'Miss_Rosie' #actual name of the bot ##rosie is taken... does the bot need to be registered?
+      c.user = 'Rosie_' #actual name of the bot ##rosie is taken... does the bot need to be registered?
       c.nick = c.user #sets nickname as same as user name
   end
 
@@ -64,7 +64,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply gifs.sample
   end 
 
-  on :message, /Rosie\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
+  on :message, /Rosie_\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
     response = [
       [:reply, "Did someone ask for me?"],
       [:reply, "http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif"],
