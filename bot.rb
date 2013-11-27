@@ -119,6 +119,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     images = [
       "http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif",
       "http://t1.gstatic.com/images?q=tbn:ANd9GcRHO011b4PdAtKNYAzDfMm1aBeW_EW5afQ8wgEdRvI1eYQZB0o0",
+      "http://i.imgur.com/PgP44.png",
     ]
     m.reply images.sample
   end
