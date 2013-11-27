@@ -94,7 +94,16 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply gifs.sample
   end
 
-  #squirrel
+  #squirrel- taken from Radbot: https://github.com/csexton/radbot/blob/master/bot.rb
+  on :message do |m|
+    if rand(500) == 0
+      m.reply "SQUIRREL!"
+    end
+  end
+
+  on :message, /squirrel/i do |m|
+    m.reply "SQUIRREL!"
+  end
 
   #score keeper
 
@@ -105,6 +114,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   # #random
   # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
 
+  ##todo: find more lol responses
   on :message, /\blol\b/i do |m| #lol permalink: http://rubular.com/r/rp8qmLsmvP
     images = [
       "http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif",
