@@ -64,12 +64,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply gifs.sample
   end 
 
-  on :message, /Rosie\?/i do |m, name| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
+  on :message, /Rosie\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
     response = [
       [:reply, "Did someone ask for me?"],
       [:reply, "http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif"],
       [:reply, "what do you want now?"],
-      [:reply, "#{name}, why are you bothering me?"],
+      [:reply, "#{m.user.nick}, why are you bothering me?"],
       [:reply, "it wasn't me."],
       [:reply, "yyyyeessss?"],
       [:action, "hides"],
@@ -158,7 +158,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   end
 
   on :message do |m| #randomly say "I am Batman"
-    if rand(500) == 0
+    if rand(500) == 0 #to test, change random number to a number you would expect to get forcing it to respond
       m.reply "I am Batman!"
     end
   end
