@@ -16,8 +16,8 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       c.nick = c.user #sets nickname as same as user name
   end
 
-  ##todo: change so this responds to hi rosie and hello rosie
-  on :message, "hello" do |m| #when a message happens that says hello, call my block
+  #hi permalink: http://rubular.com/r/S8j2JhJaMf
+  on :message, /\bh(i|ello)\b/i do |m| #when a message happens that says hello, call my block
     m.reply "Hello, #{m.user.nick}"
   end
 
