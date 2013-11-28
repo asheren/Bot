@@ -3,6 +3,40 @@
 require 'cinch'
 require 'open-uri'
 require 'json'
+require 'pry'
+require 'sequel'
+DB = Sequel.connect('sqlite://bot.db') #sets a global constant called DB
+
+score = DB[:score] 
+
+score.insert(:nick => 'rosie', :points => 10)
+
+#TODO ###class Score and with an end at the end of this class. make an instance score = score.new and figure out some of the procedural stuff in there
+def nick_id(nick) #find out if a nick is already in the DB or if we need to create it
+  set = DB[:score].where(:nick => nick) #finds the list of every score that has the nickname nick (nick being whatever the person's nick is)
+  if set.empty? #if it doesn't find anything
+    nil #returns nil
+  else
+    set.first[:id] #otherwise grab the id of the first and return it. it'll return the id and not the nick
+  end
+end
+
+def insert_or_update_score(nick, points)
+  if nick_id(nick)
+    #1. fetch 2. increment number 3. save it back
+    row = DB[:score].where(:id => nick_id(nick)).first
+    updated_points = row[:points] + points 
+    DB[:score].where(:id => nick_id(nick)).update(:points => updated_points)
+  else
+    DB[:score].insert(:nick => nick, :points => points) #creates a new nick in the DB and gives it the points
+  end
+end
+
+#TODO #add a command that looks for a + or - number, then parses the string and turn it into a value for points
+    #will need a regex + - number word kind of thing. a bot :on message command that calls insert_or_update score and 
+    #then a command that will list db[:score].all
+
+binding.pry
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
@@ -12,7 +46,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
       c.channels = ['#rosie'] #the channel the bot connects to 
-      c.user = 'Rosie_' #actual name of the bot ##rosie is taken... does the bot need to be registered?
+      c.user = 'Rosie_' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
   end
 
@@ -60,11 +94,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "http://buzzworthy.mtv.com//wp-content/uploads/buzz/2013/10/giphy1.gif",
       "http://25.media.tumblr.com/f9c10ad19d909a351b5bbec90b08064c/tumblr_murtfzl9N81ql5yr7o1_500.gif",
       "http://i.perezhilton.com/wp-content/uploads/2013/06/real-housewives-new-jersey-drama-back.gif",
+      "http://www.reactiongifs.com/wp-content/uploads/2013/09/so-mad-i-could.gif",
     ]
     m.reply gifs.sample
   end 
 
-  on :message, /Rosie_\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
+  on :message, /#{config.nick}\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
     response = [
       [:reply, "Did someone ask for me?"],
       [:reply, "http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif"],
@@ -166,6 +201,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message, /\b(I love|I hate) .*cod.*/i do |m| # love or hate code permalink:  http://rubular.com/r/XJX6N4Z2Rj
     images = [
       "http://lifeisopinion.ca/content/images/2013/Oct/Sneakers-1.gif",
+      "http://leaksource.files.wordpress.com/2013/04/hacker-programming.gif",
     ]
     m.reply images.sample
   end
