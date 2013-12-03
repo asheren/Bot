@@ -32,11 +32,9 @@ def insert_or_update_score(nick, points)
   end
 end
 
-#TODO #add a command that looks for a + or - number, then parses the string and turn it into a value for points
-    #will need a regex + - number word kind of thing. a bot :on message command that calls insert_or_update score and 
-    #then a command that will list db[:score].all
 
-binding.pry
+
+
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
@@ -140,12 +138,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply "SQUIRREL!"
   end
 
-  #score keeper
-
-  #collection of URLs for the week
-
-  #trivia
-
   # #random
   # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
 
@@ -213,6 +205,25 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     ]
     m.reply reply.sample
   end
+
+  #TODO #add a command that looks for a + or - number, then parses the string and turn it into a value for points
+    #will need a regex + - number word kind of thing. a bot :on message command that calls insert_or_update score and 
+    #then a command that will list db[:score].all
+  on :message, /\W\d+\s\w*/ do |m| # + or - number #{user.nick} permalink: http://rubular.com/r/sf7ZZ8IZeN
+    m.reply insert_or_update_score(nick, points)
+  end
+
+  on :message, /.*my.score.*/i do |m| #what's my score permalink: http://rubular.com/r/LtWE7EkqFD
+    m.reply DB[:score].nick 
+  end
+
+  on :message, /.*score.*/i do |m| #scoreboard permalink: http://rubular.com/r/7GefKYh7UJ
+    m.reply DB[:score].all
+  end
+
+  #collection of URLs for the week
+
+  #trivia
 end
 
 
