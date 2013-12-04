@@ -9,8 +9,6 @@ DB = Sequel.connect('sqlite://bot.db') #sets a global constant called DB
 
 score = DB[:score] 
 
-score.insert(:nick => 'rosie', :points => 10)
-
 #TODO ###class Score and with an end at the end of this class. make an instance score = score.new and figure out some of the procedural stuff in there
 def nick_id(nick) #find out if a nick is already in the DB or if we need to create it
   set = DB[:score].where(:nick => nick) #finds the list of every score that has the nickname nick (nick being whatever the person's nick is)
@@ -22,6 +20,7 @@ def nick_id(nick) #find out if a nick is already in the DB or if we need to crea
 end
 
 def insert_or_update_score(nick, points)
+  nick.downcase!
   if nick_id(nick)
     #1. fetch 2. increment number 3. save it back
     row = DB[:score].where(:id => nick_id(nick)).first
@@ -32,9 +31,12 @@ def insert_or_update_score(nick, points)
   end
 end
 
-
-
-
+def lookup_score(nick)
+  DB[:score].filter(:nick => nick).first[:points] #if someone has no points, this throws an exception
+rescue #def rescue end is the control flow. if there are any exceptions, the rescue catches the exception and returns nil because it's the last thing that happens in the method
+  nil #this rescue thing can be dangerous because it can hide serious errors. generally, use this for more explicit errors. but here, it's just a private bot so it's fine.
+end
+#binding.pry 
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
@@ -44,7 +46,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
       c.channels = ['#rosie'] #the channel the bot connects to 
-      c.user = 'Rosie_' #actual name of the bot #TODO: register rosie_
+      c.user = 'rosie_' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
   end
 
@@ -209,21 +211,42 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   #TODO #add a command that looks for a + or - number, then parses the string and turn it into a value for points
     #will need a regex + - number word kind of thing. a bot :on message command that calls insert_or_update score and 
     #then a command that will list db[:score].all
-  on :message, /\W\d+\s\w*/ do |m| # + or - number #{user.nick} permalink: http://rubular.com/r/sf7ZZ8IZeN
-    m.reply insert_or_update_score(nick, points)
+  on :message, /([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/x47YbN2Sea
+    if nick == m.user.nick 
+      m.reply "No points for you! As punishment -100 points"
+      insert_or_update_score(nick, -100)
+    else
+      if nick && points 
+        insert_or_update_score(nick, points.to_i)
+        m.reply "#{nick} has #{lookup_score(nick)} points"
+      end
+    end
   end
 
-  on :message, /.*my.score.*/i do |m| #what's my score permalink: http://rubular.com/r/LtWE7EkqFD
-    m.reply DB[:score].nick 
+  on :message, /#{config.nick}.*my.score.*/i do |m| #what's my score permalink: http://rubular.com/r/LtWE7EkqFD
+    #binding.pry
+    score = lookup_score(m.user.nick)
+    if score 
+      m.reply "#{m.user.nick} Your score is: #{}"
+    else
+      m.reply "You have no points, which is sad."
+    end
   end
 
-  on :message, /.*score.*/i do |m| #scoreboard permalink: http://rubular.com/r/7GefKYh7UJ
-    m.reply DB[:score].all
+  on :message, /#{config.nick}.*leaderboard.*/i do |m| #scoreboard permalink: http://rubular.com/r/7GefKYh7UJ 
+    m.reply "            Leaderboard"
+    score = DB[:score].reverse_order(:points).all 
+    scores = score.map {|e| "#{e[:nick].rjust(20)} #{e[:points]}"}
+    scores.each do |s|
+      m.reply s 
+    end #first sort, then print only nick and points, and align them correctly
   end
 
   #collection of URLs for the week
 
   #trivia
+
+  #cleverbot
 end
 
 
