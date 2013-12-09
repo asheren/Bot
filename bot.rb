@@ -5,7 +5,7 @@ require 'open-uri'
 require 'json'
 require 'pry'
 require 'sequel'
-require 'db.rb'
+require_relative 'db.rb'
 
 #binding.pry 
 

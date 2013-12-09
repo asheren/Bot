@@ -3,16 +3,9 @@ require 'singleton'
 class DB
   include Singleton
   
-  def connect_database
-    DB = Sequel.connect('sqlite://bot.db') #sets a global constant called DB
-    score = DB[:score] 
-  end
-
-  attr_accessor :nick, :points 
-
-  def initialize(nick, points)
-    @nick = nick 
-    @points = points 
+  def initialize(file = 'sqlite://bot.db')
+    @db = File.open(file)  
+   # score = DB[:score]
   end
   
   def nick_id(nick) #find out if a nick is already in the DB or if we need to create it
