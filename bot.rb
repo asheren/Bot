@@ -6,7 +6,7 @@ require 'json'
 require 'pry'
 require 'sequel'
 require_relative 'db'
-#require_relative 'cleverbot'
+require_relative 'cleverbot'
 
 #binding.pry 
 
@@ -20,7 +20,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       c.channels = ['#rosie'] #the channel the bot connects to 
       c.user = 'rosie_' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
-    #  c.plugins.plugins = [Cinch::Plugins::Cleverbot]
+      c.plugins.plugins = [Cinch::Plugins::Cleverbot]
   end
 
     
@@ -208,7 +208,11 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   on :message, /#{config.nick}.*leaderboard.*/i do |m| #scoreboard permalink: http://rubular.com/r/7GefKYh7UJ 
     m.reply "            Leaderboard"
-    score = DB.instance.score.reverse_order(:points).all #
+    db = DB.instance 
+    score = db.score.reverse_order(:points).all #DB.instance.score is long because it's a singleton. Good for DBs because
+                                        #you can only get one instance of it. There are issues with using singleton pattern but if you're
+                                        #only using it for the same thing everywhere (ie- a db connection) then it makes sense.
+                                        #DB is the class and we need to get an instance of the class and then score is the method from the DB class
     scores = score.map {|e| "#{e[:nick].rjust(20)} #{e[:points]}"}
     scores.each do |s|
       m.reply s 
