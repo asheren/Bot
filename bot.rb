@@ -5,7 +5,8 @@ require 'open-uri'
 require 'json'
 require 'pry'
 require 'sequel'
-require_relative 'db.rb'
+require_relative 'db'
+#require_relative 'cleverbot'
 
 #binding.pry 
 
@@ -19,7 +20,11 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       c.channels = ['#rosie'] #the channel the bot connects to 
       c.user = 'rosie_' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
+    #  c.plugins.plugins = [Cinch::Plugins::Cleverbot]
   end
+
+    
+ 
 
   #hi permalink: http://rubular.com/r/S8j2JhJaMf
   on :message, /\bh(i|ello)\b/i do |m| #when a message happens that says hello, call my block
@@ -182,20 +187,20 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message, /([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/x47YbN2Sea
     if nick == m.user.nick 
       m.reply "No points for you! As punishment -100 points"
-      insert_or_update_score(nick, -100)
+      DB.instance.insert_or_update_score(nick, -100)
     else
       if nick && points 
-        insert_or_update_score(nick, points.to_i)
-        m.reply "#{nick} has #{lookup_score(nick)} points"
+        DB.instance.insert_or_update_score(nick, points.to_i)
+        m.reply "#{nick} has #{DB.instance.lookup_score(nick)} points"
       end
     end
   end
 
   on :message, /#{config.nick}.*my.score.*/i do |m| #what's my score permalink: http://rubular.com/r/LtWE7EkqFD
     #binding.pry
-    score = lookup_score(m.user.nick)
+    score = DB.instance.lookup_score(m.user.nick)
     if score 
-      m.reply "#{m.user.nick} Your score is: #{}"
+      m.reply "#{m.user.nick} Your score is: #{score} points"
     else
       m.reply "You have no points, which is sad."
     end
@@ -203,7 +208,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   on :message, /#{config.nick}.*leaderboard.*/i do |m| #scoreboard permalink: http://rubular.com/r/7GefKYh7UJ 
     m.reply "            Leaderboard"
-    score = DB[:score].reverse_order(:points).all 
+    score = DB.instance.score.reverse_order(:points).all #
     scores = score.map {|e| "#{e[:nick].rjust(20)} #{e[:points]}"}
     scores.each do |s|
       m.reply s 
@@ -213,8 +218,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   #collection of URLs for the week
 
   #trivia
-
-  #cleverbot
 end
 
 
