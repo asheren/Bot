@@ -17,8 +17,8 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     c.realname = 'Rosie' #real name that shows up in who's there list in irc
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
-      c.channels = ['#rosie'] #the channel the bot connects to 
-      c.user = 'rosie_' #actual name of the bot #TODO: register rosie_
+      c.channels = ['#arlingtonruby'] #the channel the bot connects to 
+      c.user = 'rosiebot' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
       c.plugins.plugins = [Cinch::Plugins::Cleverbot]
   end
