@@ -112,9 +112,9 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
 
-  on :message, /squirrel/i do |m|
-    m.reply "SQUIRREL!"
-  end
+  # on :message, /squirrel/i do |m| #because arlington ruby can't have nice things
+  #   m.reply "SQUIRREL!"
+  # end
 
   # #random
   # http://i.perezhilton.com/wp-content/uploads/2013/02/teresa-giudice-joe-testimony.gif #do I look fazed
