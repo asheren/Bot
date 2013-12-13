@@ -31,8 +31,8 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply "Hello, #{m.user.nick}"
   end
 
-  on :message, /cheer (.*?) | up (.*)/ do |m, name| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
-    m.reply "feel better, #{name}"
+  on :message, /cheer up (.*)/ do |m, name| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
+    m.reply "feel better, #{m.user.nick}"
   end
 
   on :message, /.*weather.*/ do |m|
@@ -93,6 +93,19 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
  
+  on :message, /.*compliment #{m.user.nick}.*/i do |m|
+    response = [
+      "#{m.user.nick}, you're wonderful",
+      "#{m.user.nick}, you're fantastic",
+      "#{m.user.nick}, you make me want to be a better bot",
+      "#{m.user.nick}, your code is legendary",
+      "#{m.user.nick}, your code is like the things dreams are made of",
+      "#{m.user.nick}, you're so pretty",
+      "http://31.media.tumblr.com/tumblr_mbgemfUDEw1riqizno1_500.gif",
+      "http://big.assets.huffingtonpost.com/Ryan1.gif",
+    ]
+    m.reply response.sample
+  end
 
   on :message, /.*(coffee).*/i do |m|
     gifs = [
@@ -109,6 +122,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message do |m|
     if rand(500) == 0
       m.reply "SQUIRREL!"
+    end
+  end
+
+   on :message do |m|
+    if rand(500) == 0
+      m.reply "http://girlsgonegeek.files.wordpress.com/2013/01/liz-lemon-im-a-princess.gif"
     end
   end
 
@@ -180,6 +199,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     reply = [
       "http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg",
       "My software never has bugs. It just develops random features",
+      "http://24.media.tumblr.com/83f38af57b95f9f98204409cf1f7c37e/tumblr_mh3es6vGIT1rxnegyo5_500.gif",
     ]
     m.reply reply.sample
   end
