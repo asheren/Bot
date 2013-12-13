@@ -31,7 +31,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply "Hello, #{m.user.nick}"
   end
 
-  on :message, /cheer up (.*)/ do |m, name| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
+  on :message, /cheer up (.*)/ do |m| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
     m.reply "feel better, #{m.user.nick}"
   end
 
