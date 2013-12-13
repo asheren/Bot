@@ -93,19 +93,19 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
  
-  on :message, /.*(compliment #{user.nick}).*/i do |m|
-    responses = [
-      "#{m.user.nick}, you're wonderful",
-      "#{m.user.nick}, you're fantastic",
-      "#{m.user.nick}, you make me want to be a better bot",
-      "#{m.user.nick}, your code is legendary",
-      "#{m.user.nick}, your code is like the things dreams are made of",
-      "#{m.user.nick}, you're so pretty",
-      "http://31.media.tumblr.com/tumblr_mbgemfUDEw1riqizno1_500.gif",
-      "http://big.assets.huffingtonpost.com/Ryan1.gif",
-    ]
-    m.reply responses.sample
-  end
+  # on :message, /.*(compliment #{m.user.nick}).*/i do |m|
+  #   responses = [
+  #     "#{m.user.nick}, you're wonderful",
+  #     "#{m.user.nick}, you're fantastic",
+  #     "#{m.user.nick}, you make me want to be a better bot",
+  #     "#{m.user.nick}, your code is legendary",
+  #     "#{m.user.nick}, your code is like the things dreams are made of",
+  #     "#{m.user.nick}, you're so pretty",
+  #     "http://31.media.tumblr.com/tumblr_mbgemfUDEw1riqizno1_500.gif",
+  #     "http://big.assets.huffingtonpost.com/Ryan1.gif",
+  #   ]
+  #   m.reply responses.sample
+  # end
 
   on :message, /.*(coffee).*/i do |m|
     gifs = [
