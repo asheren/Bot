@@ -17,7 +17,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     c.realname = 'Rosie' #real name that shows up in who's there list in irc
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
-      c.channels = ['#arlingtonruby'] #the channel the bot connects to 
+      c.channels = ['#rosie'] #the channel the bot connects to 
       c.user = 'rosiebot' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
       c.plugins.plugins = [Cinch::Plugins::Cleverbot]
@@ -31,7 +31,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     m.reply "Hello, #{m.user.nick}"
   end
 
-  on :message, /(cheer up) (.*)/ do |m| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
+  on :message, /(cheer me up)/ do |m| #via cinch amazingness, it uses a regex to find the parameters and pass in that information
     m.reply "feel better, #{m.user.nick}"
   end
 
@@ -93,19 +93,19 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
  
-  # on :message, /.*(compliment) #{m.user.nick}.*/i do |m, nick|
-  #   responses = [
-  #     "#{m.user.nick}, you're wonderful",
-  #     "#{m.user.nick}, you're fantastic",
-  #     "#{m.user.nick}, you make me want to be a better bot",
-  #     "#{m.user.nick}, your code is legendary",
-  #     "#{m.user.nick}, your code is like the things dreams are made of",
-  #     "#{m.user.nick}, you're so pretty",
-  #     "http://31.media.tumblr.com/tumblr_mbgemfUDEw1riqizno1_500.gif",
-  #     "http://big.assets.huffingtonpost.com/Ryan1.gif",
-  #   ]
-  #   m.reply responses.sample
-  # end
+  on :message, /.*(compliment) (.*?)/i do |m, nick| #how to compliment others?!
+    responses = [
+      "#{nick}, you're wonderful",
+      "#{nick}, you're fantastic",
+      "#{nick}, you make me want to be a better bot",
+      "#{nick}, your code is legendary",
+      "#{nick}, your code is like the things dreams are made of",
+      "#{nick}, you're so pretty",
+      "http://31.media.tumblr.com/tumblr_mbgemfUDEw1riqizno1_500.gif",
+      "http://big.assets.huffingtonpost.com/Ryan1.gif",
+    ]
+    m.reply responses.sample
+  end
 
   on :message, /.*(coffee).*/i do |m|
     gifs = [

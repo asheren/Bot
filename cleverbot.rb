@@ -6,7 +6,7 @@ module Cinch
 		class Cleverbot
 			include Cinch::Plugin 
 
-			match lambda { |m| /^#{m.bot.nick}(:|\s)+(.+)/i }, use_prefix: false 
+			match lambda { |m| /^#{m.bot.nick}:(\s)+(.+)/i }, use_prefix: false 
 			#in lambda so that the line is evaluated each time. the regex is a match to anything said to the bot
 
 			def initialize(*args)
