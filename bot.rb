@@ -93,7 +93,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
  
-  on :message, /.*(compliment) (.*?)/i do |m, nick| #how to compliment others?!
+  on :message, /compliment (.+)/i do |m, nick| 
     responses = [
       "#{nick}, you're wonderful",
       "#{nick}, you're fantastic",
