@@ -17,7 +17,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     c.realname = 'Rosie' #real name that shows up in who's there list in irc
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
-      c.channels = ['#arlingtonruby'] #the channel the bot connects to 
+      c.channels = ['#rosie'] #the channel the bot connects to 
       c.user = 'rosiebot' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
       c.plugins.plugins = [Cinch::Plugins::Cleverbot]
@@ -110,7 +110,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message, /.*(coffee).*/i do |m|
     gifs = [
       "http://wac.9ebf.edgecastcdn.net/809EBF/ec-origin.chicago.barstoolsports.com/files/2012/12/badcoffee.gif",
-      "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif%3Fw%3D400%26h%3D211",
+      "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif",
       "http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif",
       "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k",
       "COOOFFFEEEEE!",
