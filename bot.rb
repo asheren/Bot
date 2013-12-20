@@ -1,3 +1,14 @@
+##refactoring:
+#1. on :message
+#2. action vs. response function- make into a method?
+ # msg = response.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
+ #    if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
+ #      m.channel.action msg.last # If it equals :action, then "/me" it to the channel
+ #    else
+ #      m.reply msg.last  # Otherwise just reply like normal
+ #    end
+ #3. score board methods into a separate module? Better to have more files or less files? could also separate the "random" methods
+
 #Rosie the Bot ##alternate name sababot
 
 require 'cinch'
@@ -9,6 +20,10 @@ require_relative 'db'
 require_relative 'cleverbot'
 
 #binding.pry 
+
+def reply_random(m, list)
+  m.reply list.sample
+end #refactor all the samples that use an array of options 
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
@@ -23,8 +38,12 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       c.plugins.plugins = [Cinch::Plugins::Cleverbot]
   end
 
-    
- 
+  ##is this how we would refactor? just by setting the action to start and then putting start wherever on :message currently exists?  
+  # def on_message
+  #   start = on :message
+  # end
+
+
 
   #hi permalink: http://rubular.com/r/S8j2JhJaMf
   on :message, /\bh(i|ello)\b/i do |m| #when a message happens that says hello, call my block
@@ -64,16 +83,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       m.reply msg.last  # Otherwise just reply like normal
     end #comes out with the brackets.
   end
- 
-  on :message, /.*(angr|frustr|annoy).*/i do |m| #permalink: http://rubular.com/r/xwJ6lsIOE3
-    gifs = [
-      "http://buzzworthy.mtv.com//wp-content/uploads/buzz/2013/10/giphy1.gif",
-      "http://25.media.tumblr.com/f9c10ad19d909a351b5bbec90b08064c/tumblr_murtfzl9N81ql5yr7o1_500.gif",
-      "http://i.perezhilton.com/wp-content/uploads/2013/06/real-housewives-new-jersey-drama-back.gif",
-      "http://www.reactiongifs.com/wp-content/uploads/2013/09/so-mad-i-could.gif",
-    ]
-    m.reply gifs.sample
-  end 
 
   on :message, /#{config.nick}\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
     response = [
@@ -93,8 +102,17 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
  
+  on :message, /.*(angr|frustr|annoy).*/i do |m| #permalink: http://rubular.com/r/xwJ6lsIOE3
+    reply_random m, [
+      "http://buzzworthy.mtv.com//wp-content/uploads/buzz/2013/10/giphy1.gif",
+      "http://25.media.tumblr.com/f9c10ad19d909a351b5bbec90b08064c/tumblr_murtfzl9N81ql5yr7o1_500.gif",
+      "http://i.perezhilton.com/wp-content/uploads/2013/06/real-housewives-new-jersey-drama-back.gif",
+      "http://www.reactiongifs.com/wp-content/uploads/2013/09/so-mad-i-could.gif",
+    ]
+  end 
+ 
   on :message, /compliment (.+)/i do |m, nick| 
-    responses = [
+    reply_random m, [
       "#{nick}, you're wonderful",
       "#{nick}, you're fantastic",
       "#{nick}, you make me want to be a better bot",
@@ -104,19 +122,31 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "http://31.media.tumblr.com/tumblr_mbgemfUDEw1riqizno1_500.gif",
       "http://big.assets.huffingtonpost.com/Ryan1.gif",
     ]
-    m.reply responses.sample
   end
 
   on :message, /.*(coffee).*/i do |m|
-    gifs = [
+    reply_random m, [
       "http://wac.9ebf.edgecastcdn.net/809EBF/ec-origin.chicago.barstoolsports.com/files/2012/12/badcoffee.gif",
       "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif",
       "http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif",
       "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k",
       "COOOFFFEEEEE!",
     ]
-    m.reply gifs.sample
   end
+
+  # Option 2. same thing as above, but don't need ot set the variable 
+  # on :message, /.*(coffee).*/i do |m|
+  #   arr = [
+  #     "http://wac.9ebf.edgecastcdn.net/809EBF/ec-origin.chicago.barstoolsports.com/files/2012/12/badcoffee.gif",
+  #     "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif",
+  #     "http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif",
+  #     "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k",
+  #     "COOOFFFEEEEE!",
+  #   ]
+  #   reply_random m, arr
+  # end
+
+
 
   #squirrel- taken from Radbot: https://github.com/csexton/radbot/blob/master/bot.rb
   on :message do |m|
@@ -131,6 +161,11 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     end
   end
 
+  on :message do |m| #randomly say "I am Batman"
+    if rand(500) == 0 #to test, change random number to a number you would expect to get forcing it to respond
+      m.reply "I am Batman!"
+    end
+  end
   # on :message, /squirrel/i do |m| #because arlington ruby can't have nice things
   #   m.reply "SQUIRREL!"
   # end
@@ -140,16 +175,15 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   ##todo: find more lol responses
   on :message, /\blol\b/i do |m| #lol permalink: http://rubular.com/r/rp8qmLsmvP
-    images = [
+    reply_random m, [
       "http://26.media.tumblr.com/tumblr_lsx76yuu0U1qa4vt9o1_500.gif",
       "http://t1.gstatic.com/images?q=tbn:ANd9GcRHO011b4PdAtKNYAzDfMm1aBeW_EW5afQ8wgEdRvI1eYQZB0o0",
       "http://i.imgur.com/PgP44.png",
     ]
-    m.reply images.sample
   end
 
   on :message, /.*joke.*/i do |m| #rosie, tell me a joke permalink: http://rubular.com/r/nj5dZuQfnk
-    responses = [
+    reply_random m, [
       "It’s hard to explain puns to kleptomaniacs because they always take things literally.",
       "What does a nosey pepper do? Get jalapeño business.",
       "You kill vegetarian vampires with a steak to the heart.",
@@ -168,40 +202,32 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "You want to hear a pizza joke? Never mind, it’s pretty cheesy.",
       "Dry erase boards are remarkable.",
     ]
-    m.reply responses.sample
   end
 
 
   on :message, /.*(district taco).*/i do |m| #district taco mention permalink: http://rubular.com/r/HyGCwpSps9
-    gifs = [
+    reply_random m, [
       "http://images5.fanpop.com/image/photos/30300000/Da-best-3-mean-girls-30385685-500-225.gif",
       "http://25.media.tumblr.com/22d830dbc9bd5de756417f2e009e9e65/tumblr_mtbufrOGsO1ql5yr7o1_500.gif",
       "http://bcgavel.com/wp-content/uploads/2013/11/Gilmore-Girls-gif.gif",
     ]
-    m.reply gifs.sample
   end
 
-  on :message do |m| #randomly say "I am Batman"
-    if rand(500) == 0 #to test, change random number to a number you would expect to get forcing it to respond
-      m.reply "I am Batman!"
-    end
-  end
+ 
 
   on :message, /\b(I love|I hate) .*cod.*/i do |m| # love or hate code permalink:  http://rubular.com/r/XJX6N4Z2Rj
-    images = [
+    reply_random m, [
       "http://lifeisopinion.ca/content/images/2013/Oct/Sneakers-1.gif",
       "http://leaksource.files.wordpress.com/2013/04/hacker-programming.gif",
     ]
-    m.reply images.sample
   end
 
   on :message, /.*(refactor).*/i do |m| #refactor permalink: http://rubular.com/r/Kdg7UFlKnr
-    reply = [
+    reply_random m, [
       "http://www.appliancesonlineblog.com.au/wp-content/uploads/2012/03/Rosie-from-The-Jetsons.jpg",
       "My software never has bugs. It just develops random features",
       "http://24.media.tumblr.com/83f38af57b95f9f98204409cf1f7c37e/tumblr_mh3es6vGIT1rxnegyo5_500.gif",
     ]
-    m.reply reply.sample
   end
 
   on :message, /([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/x47YbN2Sea
