@@ -1,14 +1,3 @@
-##refactoring:
-#1. on :message
-#2. action vs. response function- make into a method?
- # msg = response.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
- #    if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
- #      m.channel.action msg.last # If it equals :action, then "/me" it to the channel
- #    else
- #      m.reply msg.last  # Otherwise just reply like normal
- #    end
- #3. score board methods into a separate module? Better to have more files or less files? could also separate the "random" methods
-
 #Rosie the Bot ##alternate name sababot
 
 require 'cinch'
@@ -25,6 +14,15 @@ def reply_random(m, list)
   m.reply list.sample
 end #refactor all the samples that use an array of options 
 
+def action_or_reply_response(m, list) 
+  list = list.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
+    if list.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
+      m.channel.action list.last # If it equals :action, then "/me" it to the channel
+    else
+      m.reply list.last  # Otherwise just reply like normal
+    end #comes out with the brackets.
+end
+
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
                   #and passes in cinch configuration for the bot. passes a reference to itself that you can configure
@@ -37,12 +35,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       c.nick = c.user #sets nickname as same as user name
       c.plugins.plugins = [Cinch::Plugins::Cleverbot]
   end
-
-  ##is this how we would refactor? just by setting the action to start and then putting start wherever on :message currently exists?  
-  # def on_message
-  #   start = on :message
-  # end
-
 
 
   #hi permalink: http://rubular.com/r/S8j2JhJaMf
@@ -67,7 +59,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   end
 
   on :message, /.*morning.*/ do |m|
-    message = [
+     action_or_reply_response m, [
       [:reply, "Good morning to you too!"],
       [:reply, "it's a brand new day!"],
       [:reply, "I'm sleepy today"],
@@ -76,16 +68,10 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       [:action, "makes coffee"],
       [:action, "*throws open all the windows* it's a glorious day today"]
     ]
-    msg = message.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
-    if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
-      m.channel.action msg.last # If it equals :action, then "/me" it to the channel
-    else
-      m.reply msg.last  # Otherwise just reply like normal
-    end #comes out with the brackets.
   end
 
   on :message, /#{config.nick}\?/i do |m| #asking for Rosie permalink: http://rubular.com/r/StuBnfzUE6
-    response = [
+    action_or_reply_response m, [
       [:reply, "Did someone ask for me?"],
       [:reply, "http://31.media.tumblr.com/fe021d747a605a8a7cba5767011251e1/tumblr_mjpo4q44aj1rjatglo1_500.gif"],
       [:reply, "what do you want now?"],
@@ -94,12 +80,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       [:reply, "yyyyeessss?"],
       [:action, "hides"],
     ]
-    msg = response.sample     # Pick a random value from the "message" array (e.g. [:action, "smiles"])
-    if msg.first == :action     # See what the first element in that array is (e.g. [:action, "smiles"].first => :action)
-      m.channel.action msg.last # If it equals :action, then "/me" it to the channel
-    else
-      m.reply msg.last  # Otherwise just reply like normal
-    end
   end
  
   on :message, /.*(angr|frustr|annoy).*/i do |m| #permalink: http://rubular.com/r/xwJ6lsIOE3
@@ -268,6 +248,8 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   #collection of URLs for the week
 
   #trivia
+
+  #rosiebot could keep the last 100 messages and DM them to someone
 end
 
 

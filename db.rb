@@ -1,4 +1,3 @@
-#is there anything here that can be refactored? It looks pretty solid...
 require 'singleton'
 
 class DB
