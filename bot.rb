@@ -8,7 +8,7 @@ require 'sequel'
 require_relative 'db'
 require_relative 'cleverbot'
 
-#binding.pry 
+
 
 def reply_random(m, list)
   m.reply list.sample
@@ -21,6 +21,10 @@ def action_or_reply_response(m, list)
     else
       m.reply list.last  # Otherwise just reply like normal
     end #comes out with the brackets.
+end
+
+def has_nick?(m, nick)
+  c.channel m.nick 
 end
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
@@ -114,19 +118,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     ]
   end
 
-  # Option 2. same thing as above, but don't need ot set the variable 
-  # on :message, /.*(coffee).*/i do |m|
-  #   arr = [
-  #     "http://wac.9ebf.edgecastcdn.net/809EBF/ec-origin.chicago.barstoolsports.com/files/2012/12/badcoffee.gif",
-  #     "http://thoughtcatalog.files.wordpress.com/2013/08/tumblr_ln3pef2aly1qaq98ro1_400.gif",
-  #     "http://25.media.tumblr.com/57acd60ebc217bc00169fd73b52be5a6/tumblr_mi5u4eeJZv1qcwyxho1_500.gif",
-  #     "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSP8TfZHYrpS1Hz2jM_vdwOToNN949vYDPFZ74G3vw41r4rNH6k",
-  #     "COOOFFFEEEEE!",
-  #   ]
-  #   reply_random m, arr
-  # end
-
-
 
   #squirrel- taken from Radbot: https://github.com/csexton/radbot/blob/master/bot.rb
   on :message do |m|
@@ -184,7 +175,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     ]
   end
 
-
   on :message, /.*(district taco).*/i do |m| #district taco mention permalink: http://rubular.com/r/HyGCwpSps9
     reply_random m, [
       "http://images5.fanpop.com/image/photos/30300000/Da-best-3-mean-girls-30385685-500-225.gif",
@@ -192,8 +182,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
       "http://bcgavel.com/wp-content/uploads/2013/11/Gilmore-Girls-gif.gif",
     ]
   end
-
- 
 
   on :message, /\b(I love|I hate) .*cod.*/i do |m| # love or hate code permalink:  http://rubular.com/r/XJX6N4Z2Rj
     reply_random m, [
@@ -211,19 +199,21 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   end
 
   on :message, /([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/x47YbN2Sea
-    if nick == m.user.nick 
-      m.reply "No points for you! As punishment -100 points"
-      DB.instance.insert_or_update_score(nick, -100)
-    else
-      if nick && points 
-        DB.instance.insert_or_update_score(nick, points.to_i)
-        m.reply "#{nick} has #{DB.instance.lookup_score(nick)} points"
+    #User(who)
+    if has_nick? == true
+      if nick == m.user.nick 
+        m.reply "No points for you! As punishment -100 points"
+        DB.instance.insert_or_update_score(nick, -100)
+      else
+        if nick && points 
+          DB.instance.insert_or_update_score(nick, points.to_i)
+          m.reply "#{nick} has #{DB.instance.lookup_score(nick)} points"
+        end
       end
     end
   end
 
   on :message, /#{config.nick}.*my.score.*/i do |m| #what's my score permalink: http://rubular.com/r/LtWE7EkqFD
-    #binding.pry
     score = DB.instance.lookup_score(m.user.nick)
     if score 
       m.reply "#{m.user.nick} Your score is: #{score} points"
@@ -242,6 +232,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     scores = score.map {|e| "#{e[:nick].rjust(20)} #{e[:points]}"}
     scores.each do |s|
       m.reply s 
+
     end #first sort, then print only nick and points, and align them correctly
   end
 
@@ -251,7 +242,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
 
   #rosiebot could keep the last 100 messages and DM them to someone
 end
-
 
 bot.start 
 
