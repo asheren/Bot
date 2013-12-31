@@ -23,10 +23,6 @@ def action_or_reply_response(m, list)
     end #comes out with the brackets.
 end
 
-def has_nick?(m, nick)
-  m.channel.nick 
-end
-
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
   configure do |c| #In the block. configuring (method configure) that also takes a block
                   #and passes in cinch configuration for the bot. passes a reference to itself that you can configure
@@ -34,7 +30,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     c.realname = 'Rosie' #real name that shows up in who's there list in irc
    # c.password = ENV['IRC_PASS'] password used to connect to IRC server. don't need one for freenode
  
-      c.channels = ['#rosie'] #the channel the bot connects to 
+      c.channels = ['#arlingtonruby'] #the channel the bot connects to 
       c.user = 'rosiebot' #actual name of the bot #TODO: register rosie_
       c.nick = c.user #sets nickname as same as user name
       c.plugins.plugins = [Cinch::Plugins::Cleverbot]
@@ -199,8 +195,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   end
 
   on :message, /([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/x47YbN2Sea
-    #User(who)
-    if has_nick? == true
+    if m.channel.has_user? nick
       if nick == m.user.nick 
         m.reply "No points for you! As punishment -100 points"
         DB.instance.insert_or_update_score(nick, -100)
@@ -210,6 +205,9 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
           m.reply "#{nick} has #{DB.instance.lookup_score(nick)} points"
         end
       end
+    else
+      m.reply "You cannot give points to imaginary friends because that's ridiculousness. -1 for you."
+      DB.instance.insert_or_update_score(nick, -1)
     end
   end
 
@@ -243,5 +241,6 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   #rosiebot could keep the last 100 messages and DM them to someone
 end
 
+#binding.pry
 bot.start 
 
