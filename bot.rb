@@ -24,7 +24,7 @@ def action_or_reply_response(m, list)
 end
 
 def has_nick?(m, nick)
-  c.channel m.nick 
+  m.channel.nick 
 end
 
 bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a block
