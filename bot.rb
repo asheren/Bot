@@ -194,7 +194,7 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
     ]
   end
 
-  on :message, /([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/x47YbN2Sea
+  on :message, /^([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/YFA9q7tagM
     if m.channel.has_user? nick
       if nick == m.user.nick 
         m.reply "No points for you! As punishment -100 points"
