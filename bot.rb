@@ -197,12 +197,16 @@ bot = Cinch::Bot.new do #using cinch to create a new bot. The new method takes a
   on :message, /^([+-]\d+)\s+(\w*)/ do |m, points, nick| # + or - number #{user.nick} permalink: http://rubular.com/r/YFA9q7tagM
     if m.channel.has_user? nick
       if nick == m.user.nick 
-        m.reply "No points for you! As punishment -100 points"
-        DB.instance.insert_or_update_score(nick, -100)
+        m.reply "No points for you! As punishment -10 points"
+        DB.instance.insert_or_update_score(nick, -10)
       else
         if nick && points 
-          DB.instance.insert_or_update_score(nick, points.to_i)
-          m.reply "#{nick} has #{DB.instance.lookup_score(nick)} points"
+          if points.to_i.abs > 10
+            m.reply "#{m.user.nick}, you are abusing the system and I hate you."
+          else
+            DB.instance.insert_or_update_score(nick, points.to_i)
+            m.reply "#{nick} has #{DB.instance.lookup_score(nick)} points"
+          end
         end
       end
     else

@@ -2,6 +2,9 @@ require 'singleton'
 
 class DB
   include Singleton
+
+  MAX_POINTS = 500
+  MIN_POINTS = -500
   
   def initialize(file = 'sqlite://bot.db')
     @db = Sequel.connect(file)  #setup the DB connection
@@ -28,6 +31,9 @@ class DB
         #1. fetch 2. increment number 3. save it back
         row = score.where(:id => nick_id(nick)).first
         updated_points = row[:points] + points 
+        updated_points = MAX_POINTS if updated_points >= MAX_POINTS 
+        updated_points = MIN_POINTS if updated_points <= MIN_POINTS 
+       
         score.where(:id => nick_id(nick)).update(:points => updated_points)
       else
         score.insert(:nick => nick, :points => points) #creates a new nick in the DB and gives it the points
